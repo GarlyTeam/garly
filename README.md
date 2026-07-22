@@ -21,6 +21,13 @@ Garly is currently in active development and Android testing. We are testing and
 
 Garly is being developed through real-device testing and community feedback. Detection systems are experimental and continue to be calibrated to reduce false alarms and missed events.
 
+## How Garly works
+
+The public documentation explains Garly's user-facing safety and privacy flows without disclosing proprietary detection thresholds, calibration methods or production infrastructure:
+
+- [How Garly works](docs/HOW_GARLY_WORKS.md)
+- [Privacy model](docs/PRIVACY_MODEL.md)
+
 ## Privacy and security
 
 Garly is being designed around user consent, account-level data isolation and restricted access to sensitive information.
