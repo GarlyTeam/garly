@@ -25,6 +25,28 @@ Garly is being developed through real-device testing and community feedback. Det
 
 The public documentation explains Garly's user-facing safety and privacy flows without disclosing proprietary detection thresholds, calibration methods or production infrastructure:
 
+```mermaid
+flowchart LR
+    U["User"] --> M["Manual SOS"]
+    U --> P["Protection Mode"]
+
+    M --> C["Short cancellable countdown"]
+    P --> D["Movement, impact and stillness monitoring"]
+    D --> Q["Safety check when appropriate"]
+    Q -->|"User confirms they are safe"| R["Protection continues"]
+    Q -->|"No confirmation"| C
+    D -->|"Potential urgent event"| C
+
+    C -->|"Cancelled"| R
+    C -->|"Completed"| A["Emergency alert"]
+    A --> T["Every trusted contact added by the user"]
+    A --> L["Available location when permission and signal allow"]
+```
+
+The manual SOS works independently from AI, learned routines and Protection Mode. The assisted path adds optional device monitoring and safety checks before the same emergency-alert flow.
+
+Detailed documentation:
+
 - [How Garly works](docs/HOW_GARLY_WORKS.md)
 - [Privacy model](docs/PRIVACY_MODEL.md)
 
