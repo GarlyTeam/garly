@@ -1,6 +1,6 @@
 # Garly Android client
 
-This directory contains the reviewed native Android client used by the current Garly testing app.
+This directory contains the reviewed native Android development client for Garly. It may include security hardening prepared after the most recent store testing build; published store versions are identified separately by their version code.
 
 ## Included components
 

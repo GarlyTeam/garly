@@ -48,7 +48,7 @@ Public beta and Android testing. Additional reviewed source code and technical d
 
 ## Public source scope
 
-The reviewed native Android client is available in [`android-client/`](android-client/). It contains the WebView host, native Google sign-in bridge, foreground protection service, sensor bridge and Android resources used by the current testing app.
+The reviewed native Android development client is available in [`android-client/`](android-client/). It contains the WebView host, native Google sign-in bridge, foreground protection service, sensor bridge and Android resources used by the current development branch.
 
 The web application, backend services, production deployment configuration, private analytics and signing material are intentionally not included in this public repository.
 
