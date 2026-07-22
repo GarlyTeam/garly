@@ -1,0 +1,26 @@
+# Editors and local configuration
+.idea/
+.vscode/
+local.properties
+
+# Gradle and Android build output
+.gradle/
+**/build/
+*.apk
+*.aab
+*.idsig
+
+# Signing material and credentials
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+*.env
+.env
+google-play-upload-credentials.txt
+
+# Operating system files
+.DS_Store
+Thumbs.db
