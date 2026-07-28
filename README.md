@@ -18,6 +18,8 @@ Garly is currently in active development and Android testing. We are testing and
 - Optional private memory
 - Multilingual support
 - Community referrals and rewards
+- Holder-verified referrals and app personalisation
+- Non-custodial Safety Pool in limited testing
 
 Garly is being developed through real-device testing and community feedback. Detection systems are experimental and continue to be calibrated to reduce false alarms and missed events.
 

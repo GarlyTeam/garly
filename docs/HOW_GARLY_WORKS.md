@@ -81,6 +81,46 @@ Garly's companion can support conversations, optional memories and routines chos
 
 Private memory is optional and includes user controls to review or delete saved information. More detail is available in the [privacy model](PRIVACY_MODEL.md).
 
+## Community rewards and personalisation
+
+Garly's safety features are not for sale. The manual SOS, Protection Mode, trusted contacts and emergency alerts are always available, and none of them depend on holding a token, earning points or inviting anyone. Rewards, referrals and appearance options are optional extras that sit outside the emergency path.
+
+Emergency actions and crisis disclosures never generate rewards. Asking for help is not treated as activity to be farmed.
+
+```mermaid
+flowchart TB
+    W["User chooses to connect a Solana wallet"] --> SIG["Wallet signs a single-use text challenge"]
+    SIG --> V["Garly's server verifies the signature"]
+    V -->|"Signature not valid"| N["Feature stays locked"]
+    V -->|"Signature valid"| B["Server reads the wallet's $GARLY balance"]
+    B -->|"Below the holder threshold"| N
+    B -->|"Balance cannot be read"| N
+    B -->|"Meets the holder threshold"| U["Referrals and holder personalisation unlock"]
+```
+
+### Garly Points
+
+Garly Points are off-chain beta units recorded in the user's account to reflect eligible beta activity. They are not a currency, a tradable balance or a promise of future value.
+
+### $GARLY holders
+
+$GARLY is Garly's community token on Solana. Holding at least 10,000 $GARLY unlocks the Referrals screen and holder-only personalisation such as alternative layouts, backgrounds and themes. Core safety stays free regardless of holdings.
+
+### How a wallet is verified
+
+To apply a holder benefit, Garly needs confidence that the person using the account actually controls the wallet being claimed.
+
+- The wallet signs a short single-use text challenge. This is a message signature, not a transaction.
+- The signature cannot move, spend, stake or approve funds.
+- Garly never asks for a seed phrase or a private key, and never requests a token approval.
+- Only the wallet's public address is retained, and the user can disconnect it.
+
+Both the signature check and the balance read happen on Garly's servers. The browser is never trusted to report its own holdings, so an unlock cannot be granted by editing the page on the user's own device. If the balance cannot be read, the check fails closed and the feature stays locked rather than opening by default.
+
+### Garly Safety Pool
+
+The Safety Pool is an optional, non-custodial emergency fund shared with people the user trusts. It uses a Solana multisig in which every member connects and approves with their own wallet. Garly never creates, receives or stores a seed phrase or private key for a pool, and cannot move pool funds on its own. This feature is in limited testing and is not yet generally available.
+
 ## Current limitations
 
 - Garly is in public beta and Android testing.
@@ -88,6 +128,7 @@ Private memory is optional and includes user controls to review or delete saved 
 - Background behavior depends on Android permissions and device power-management settings.
 - Location and message delivery depend on permission, signal, connectivity and external services.
 - Planned short event recording is not active in the current prototype and will require explicit user choice before release.
+- Rewards, referrals, holder personalisation and the Safety Pool are experimental beta features and may change.
 - Garly is not a replacement for emergency services, medical assistance or local authorities.
 
 ## Information intentionally not published

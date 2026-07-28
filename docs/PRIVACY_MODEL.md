@@ -10,6 +10,7 @@ Garly is designed around user choice, account-level separation and limited shari
 4. **Limited emergency sharing:** an SOS shares the emergency message and available location with the trusted contacts selected by the user.
 5. **Visible protection:** Android background monitoring uses a visible foreground-service notification rather than hidden monitoring.
 6. **User controls:** users can disable optional memory and access available export or deletion controls.
+7. **Non-custodial wallets:** optional wallet features prove ownership through a message signature. Garly never holds a seed phrase or private key and cannot move a user's funds.
 
 ## Conceptual data flow
 
@@ -44,6 +45,7 @@ This diagram shows product responsibilities, not the private network architectur
 | Motion and orientation signals | Active Protection Mode and calibration on supported devices | Protection Mode is optional and requires device permission where applicable |
 | Location | Safety checks, user-selected place features and available SOS location | Controlled through device permission; saved places are chosen by the user |
 | Privacy Lock PIN | Additional device-level protection for sensitive areas | Optional six-digit PIN; stored as a one-way verification value for that account on that device |
+| Wallet address | Confirming $GARLY holdings for optional referral and personalisation unlocks | Connecting is optional and can be disconnected; only the public address is retained, never a seed phrase or private key |
 
 ## Account changes
 
