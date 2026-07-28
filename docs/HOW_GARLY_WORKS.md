@@ -4,7 +4,7 @@ This document provides a high-level description of Garly's current public beta a
 
 ## Two ways to ask for help
 
-Garly provides a direct manual path and an assisted protection path. The manual SOS does not depend on AI, learned routines or sensor timing.
+Garly provides a direct manual path and an assisted protection path. The manual SOS does not depend on AI, learned routines or sensor timing..
 
 ```mermaid
 flowchart LR
