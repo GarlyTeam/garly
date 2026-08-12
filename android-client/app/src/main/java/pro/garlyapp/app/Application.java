@@ -24,6 +24,15 @@ public class Application extends android.app.Application {
   @Override
   public void onCreate() {
       super.onCreate();
-      
+      // QA builds record crashes to Download/Garly-QA so a blank screen on a
+      // phone with no cable still leaves a stack trace behind. Reflection because
+      // the recorder lives in the qa source set, which this one cannot see.
+      try {
+          Class.forName("pro.garlyapp.app.QaCrashLog")
+                  .getMethod("install", android.content.Context.class)
+                  .invoke(null, this);
+      } catch (Throwable ignored) {
+          // Release builds simply do not have it.
+      }
   }
 }

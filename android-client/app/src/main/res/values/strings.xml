@@ -39,4 +39,10 @@
     }]
     
   </string>  
+
+  <!-- Un download che spariva senza dire niente e' indistinguibile da un tasto
+       rotto. Se non si puo' salvare, almeno si dice, e si indica la strada che
+       funziona. -->
+  <string name="download_blob_unsupported">Garly can\'t save this file from inside the app. Use \"Keep a copy\" in Event recording, which writes the audio to your Downloads folder.</string>
+  <string name="download_failed">The download could not be saved.</string>
 </resources>

@@ -8,9 +8,13 @@ This directory contains the reviewed native Android development client for Garly
 - Android Credential Manager integration for Google sign-in
 - Install-scoped WebView session isolation
 - Foreground service for user-started Protection Mode
+- Foreground services for live location sharing and for the acoustic feature,
+  each started only by the person and each stoppable from its own notification
 - Accelerometer and gyroscope bridge
 - Local SOS notifications and vibration feedback
 - Android 16 / API level 36 target configuration
+- The advertising ID permissions are removed from the merged manifest, so the
+  shipped app cannot read one
 
 The safety scoring engine and product interface currently remain in the hosted web application and are not part of this source release. Backend services, production signing configuration and private operational tooling are also excluded.
 
@@ -20,7 +24,10 @@ The client:
 
 - blocks cleartext traffic and mixed content;
 - rejects untrusted WebView origins;
-- denies camera and microphone requests by default;
+- never grants the camera, and never grants a request that carries anything
+  besides audio, so the camera cannot ride along inside a microphone grant;
+- grants the microphone only to the official page, only for the opt-in acoustic
+  feature, and only once Android's own permission dialog has been accepted;
 - disables Android backup of WebView session data;
 - exposes the native JavaScript bridge only to the official application page;
 - keeps signing credentials outside the repository.

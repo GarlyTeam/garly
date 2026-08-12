@@ -20,20 +20,71 @@
      application, the package attribute will need to reflect the correct path in order to use
      the abbreviated format. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="pro.garlyapp.app">
 
     
+        <!-- Firebase Analytics porta con se' il permesso dell'identificativo
+             pubblicitario, e Play allora chiede una dichiarazione che l'app usi
+             quell'identificativo. Garly non lo usa: e' spento nelle meta-data
+             qui sotto e negato di nuovo dal codice. Toglierlo dal manifest
+             unito e' l'unico modo perche' il file dica la stessa cosa della
+             dichiarazione, invece di dichiarare "non lo uso" con dentro il
+             permesso per usarlo. -->
+        <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+            tools:node="remove"/>
+        <!-- Le stesse cose scritte col nome nuovo. Analytics le porta dentro
+             tutte e tre, e Play le conta come uso dell'identificativo
+             pubblicitario: toglierne una sola lascia la pubblicazione ferma
+             esattamente come prima. Garly non fa pubblicita' e non misura
+             campagne, quindi non gliene serve nessuna. -->
+        <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
+            tools:node="remove"/>
+        <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION"
+            tools:node="remove"/>
+
         <uses-permission android:name="android.permission.INTERNET"/>
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
         <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
         <uses-permission android:name="android.permission.VIBRATE"/>
+        <!-- Walk mode is a dead-man's switch: the five-minute deadline has to hold
+             with the screen off, so the CPU is kept awake only while it is armed. -->
+        <uses-permission android:name="android.permission.WAKE_LOCK"/>
         <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"/>
         <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
         <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <!--
+          The microphone is opened only while Protection Mode is on AND the user
+          has turned on "Listen for danger sounds". Audio is classified on the
+          device by YAMNet and never uploaded; nothing is written to storage
+          unless the user separately enables event recordings.
+        -->
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+        <!--
+            Removed, not requested. Google Sign-In pulls these in transitively:
+            READ_PHONE_STATE comes from play-services-auth-api-phone, which
+            exists for signing in with a phone number, and the two storage
+            permissions are legacy baggage from the same family. Garly uses
+            none of them.
+
+            They matter beyond tidiness. All three are dangerous permissions,
+            and a personal safety app asking to read the phone state and the
+            device storage is exactly the kind of thing that draws a permissions
+            declaration request during review. Asking for nothing that is not
+            used is easier to defend than explaining why it is harmless.
+        -->
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove"/>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove"/>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
+
         <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false"/>
         <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="false"/>
+        <uses-feature android:name="android.hardware.microphone" android:required="false"/>
     
 
     
@@ -100,11 +151,19 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Only the paths the app itself owns. Claiming the whole host
+                 meant Garly also answered for pages that belong in a browser:
+                 the download page, the journey viewer somebody opens from a
+                 shared link, the privacy and terms pages. Someone with Garly
+                 installed who tapped one of those got the app instead of the
+                 page they asked for. /app is where the application lives, so
+                 that is what it answers for. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="@string/hostName" />
+                <data android:scheme="https" android:host="@string/hostName"
+                      android:pathPrefix="/app" />
             </intent-filter>
         </activity>
 
@@ -221,6 +280,26 @@
                 android:value="User-started personal safety protection: continuous accelerometer and gyroscope monitoring while Protection mode is enabled, including when the screen is locked." />
         </service>
 
+        <!-- User-started journey follow-up. Location is used only until the
+             device leaves the saved Home area and later returns to it. -->
+        <service
+            android:name=".JourneyService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <!--
+            On-device acoustic analysis. Started only when the user turns on
+            Protection Mode with "Listen for danger sounds" enabled, and stopped
+            with Protection. Audio is classified locally by YAMNet; no recording
+            is kept unless the user separately opts into event recordings.
+        -->
+        <service
+            android:name=".AcousticDiagnosticService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
         
             <activity android:name="com.google.androidbrowserhelper.trusted.NotificationPermissionRequestActivity" />
         
@@ -228,6 +307,13 @@
         
             <activity android:name=
         "com.google.androidbrowserhelper.locationdelegation.PermissionRequestActivity"/>
-        
+
+        <!-- L'identificativo pubblicitario serve a seguire una persona da
+             un'app all'altra. Per sapere se Garly si chiude da sola non serve,
+             quindi resta spento. Queste righe non fanno niente finche' Firebase
+             non c'e', e quando c'e' sono la prima cosa che legge. -->
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_default_allow_ad_personalization_signals" android:value="false" />
+
     </application>
 </manifest>

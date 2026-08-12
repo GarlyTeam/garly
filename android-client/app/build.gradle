@@ -20,6 +20,34 @@ plugins {
     id 'com.android.application'
 }
 
+/* Firebase entra solo se c'e' la sua configurazione.
+ *
+ * google-services.json lo scarica la console di Firebase, e finche' non e' qui
+ * il progetto deve restare esattamente quello di prima: stesse dipendenze,
+ * stessa dimensione, nessun innesto applicato. Un progetto che non compila
+ * finche' non arriva un file e' un progetto che, per chiunque altro, e' rotto.
+ *
+ * Le classi che parlano con Firebase stanno in una cartella a parte, e quella
+ * cartella entra nella compilazione solo in questo caso. L'altra contiene le
+ * stesse firme che non fanno niente, cosi il resto del codice chiama sempre gli
+ * stessi metodi e non deve sapere se Firebase esiste. */
+def firebaseConfig = file("google-services.json")
+ext.garlyFirebase = firebaseConfig.exists()
+if (ext.garlyFirebase) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
+    logger.lifecycle("GARLY  Firebase acceso: google-services.json trovato")
+} else {
+    logger.lifecycle("GARLY  Firebase spento: manca app/google-services.json, la build prosegue senza")
+}
+
+// Windows may temporarily lock Android's generated cache files. Test builds can
+// opt into a clean, isolated output directory with -PgarlyIsolatedBuildDir=...
+if (project.hasProperty("garlyIsolatedBuildDir")) {
+    def isolatedBuildDir = project.property("garlyIsolatedBuildDir").toString()
+    layout.buildDirectory.set(file("$rootDir/$isolatedBuildDir/app"))
+}
+
 def twaManifest = [
     applicationId: 'pro.garlyapp.app',
     hostName: 'garlyapp.pro', // The domain being opened in the TWA.
@@ -55,16 +83,60 @@ android {
     namespace "pro.garlyapp.app"
     defaultConfig {
         applicationId "pro.garlyapp.app"
-        minSdkVersion 21
+        // 23, not 21: the on-device acoustic engine ships in the public app now
+        // and TensorFlow Lite Task Audio requires API 23.
+        minSdkVersion 23
         targetSdkVersion 36
-        versionCode 13
-        versionName "13.0"
+        // Every QA build shipped as versionCode 26, so Android saw them all as the
+        // same version and the installer could refuse to swap one for another.
+        // Pass -PgarlyQaVersion=<n> to give a test build its own number.
+        // 28, not 27: signed bundles at 26 and 27 have both been uploaded, and
+        // the store refuses a version code it has already seen. This release
+        // 29 moves to Play Billing 8, which Google requires from 31 August 2026
+        // and refuses updates without. 28 carried Billing 7.1.1 and is already
+        // with Play, so this is a real version rather than a rebuild.
+        // 30 adds onNewIntent. Without it a link arriving while Garly was
+        // already open was dropped, and the only thing that ever noticed was
+        // Phantom coming back from a wallet connection: the person approved,
+        // Garly came to the front showing the page it had before, and nothing
+        // connected. 29 is already with Play, so this is a real version.
+        // 33 returns to closed testing carrying the name the community
+        // chose for the paid tier, and answering only for the paths the app
+        // owns, so a link to the download page opens the page. 32 is already
+        // with Play, so this is a real version rather than a rebuild.
+        // 34 porta ai tester le evoluzioni in 3D e il ritmo con cui si arriva,
+        // la pulizia delle registrazioni dopo 24 ore anche a protezione spenta,
+        // e il download del campione dal Sound Lab. E' stata caricata su Play,
+        // quindi da qui in poi 34 non si puo' piu' offrire: il prossimo bundle
+        // parte da 35, e questa riga esiste perche' nessuno lo scopra dopo aver
+        // aspettato tre minuti di build.
+        // 36 e' la prima con Crashlytics dentro, e Play l'ha fermata: Analytics
+        // si porta dentro da sola i permessi dell'identificativo pubblicitario,
+        // e la console chiede allora di dichiarare un uso che non c'e'. La
+        // risposta giusta non era dichiararlo, era togliere i permessi. La 37
+        // ne toglieva uno solo e sarebbe stata fermata uguale: sono tre, e la
+        // 38 li toglie tutti.
+        // 39 mette un tasto per fermare la condivisione sulla notifica stessa,
+        // e fa in modo che fermarla chiuda anche il percorso sul server. Visto
+        // su un telefono vero: percorso attivo, notifica viva, e nell'app
+        // niente da premere per smettere.
+        versionCode project.hasProperty("garlyQaVersion")
+                ? project.property("garlyQaVersion").toInteger()
+                : 39
+        versionName "39.0"
 
-        // The name for the application
-        resValue "string", "appName", twaManifest.name
+        // The name for the application. -PgarlyPreviewId renames it too, so a
+        // test copy sitting next to the real Garly on the same launcher cannot
+        // be mistaken for it, and so nobody tests the wrong icon.
+        def shownName = project.hasProperty("garlyPreviewId")
+                ? "Garly Preview"
+                : twaManifest.name
+        resValue "string", "appName", shownName
 
         // The name for the application on the Android Launcher
-        resValue "string", "launcherName", twaManifest.launcherName
+        resValue "string", "launcherName", project.hasProperty("garlyPreviewId")
+                ? "Garly Preview"
+                : twaManifest.launcherName
 
         // The URL that will be used when launching the TWA from the Android Launcher
         def launchUrl = "https://" + twaManifest.hostName + twaManifest.launchUrl
@@ -124,8 +196,17 @@ android {
         // Trusted Web Activity.
         resValue "color", "backgroundColor", twaManifest.backgroundColor
 
-        // Defines a provider authority for the Splash Screen
-        resValue "string", "providerAuthority", twaManifest.applicationId + '.fileprovider'
+        // Defines a provider authority for the Splash Screen.
+        // Built from the id this variant actually installs under, not from the
+        // one in twaManifest. A content provider authority is unique across the
+        // whole phone, so a second copy of Garly claiming the same authority is
+        // refused at install time with CONFLICTING_PROVIDER, which is exactly
+        // what happened the first time a preview build was put beside the real
+        // one. The QA build type overrides this line for the same reason.
+        resValue "string", "providerAuthority",
+                twaManifest.applicationId +
+                (project.hasProperty("garlyPreviewId") ? '.preview' : '') +
+                '.fileprovider'
 
         // The enableNotification resource is used to enable or disable the
         // TrustedWebActivityService, by changing the android:enabled and android:exported
@@ -147,13 +228,136 @@ android {
 
         resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
         resValue "string", "orientation", twaManifest.orientation
+        resValue "bool", "useLocalQaPage", "false"
+        // Two separate switches on purpose:
+        //   acousticProtection -> the single user-facing "listen for danger
+        //                         sounds" toggle. On in every build.
+        //   useLocalQaPage     -> Sound Lab, calibration and simulated alerts.
+        //                         QA only; users never see those.
+        resValue "bool", "acousticProtection", "true"
 
         
     }
+    /* Credentials come from the environment, or from the gitignored credentials
+       file that build-google-play.ps1 already uses on Windows. Never from
+       anything that is committed. Missing ones produce an unsigned bundle rather
+       than a quietly broken one: an AAB that looks finished and cannot be
+       uploaded wastes an afternoon.
+
+       The file is read here as well so that building on a second machine does
+       not mean typing the keystore password onto a command line, where the
+       shell keeps it in its history and every log picks it up. It stays in one
+       gitignored file, and gradle is the only thing that reads it. */
+    signingConfigs {
+        upload {
+            def credentials = [:]
+            def credentialsFile = file("$rootDir/google-play-upload-credentials.txt")
+            if (credentialsFile.exists()) {
+                credentialsFile.eachLine { line ->
+                    def parts = line.split(":", 2)
+                    if (parts.length == 2) credentials[parts[0].trim().toLowerCase()] = parts[1].trim()
+                }
+            }
+            def storePath = System.getenv("GARLY_UPLOAD_KEYSTORE")
+                    ?: credentials["keystore"]
+                    ?: "$rootDir/google-play-upload.jks"
+            def storePass = System.getenv("GARLY_UPLOAD_STORE_PASSWORD")
+                    ?: credentials["keystore password"]
+            def alias = System.getenv("GARLY_UPLOAD_KEY_ALIAS")
+                    ?: credentials["alias"]
+            def keyPass = System.getenv("GARLY_UPLOAD_KEY_PASSWORD")
+                    ?: credentials["key password"]
+                    ?: storePass
+            if (storePass && alias && file(storePath).exists()) {
+                storeFile file(storePath)
+                storePassword storePass
+                keyAlias alias
+                keyPassword keyPass
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            /* Play warns that the bundle carries native code without debug
+               symbols. It cannot be satisfied today: the only native library is
+               libtask_audio_jni.so, which arrives prebuilt inside TensorFlow
+               Lite with .symtab and every .debug_* section already removed, so
+               there is nothing to extract with or without the NDK. This stays
+               so that any native code we do build ourselves later ships its
+               symbols, rather than the warning becoming real and unnoticed. */
+            ndk { debugSymbolLevel 'SYMBOL_TABLE' }
+            /* An APK we hand out from our own site has to be installed the way a
+               stranger will install it, on a phone that does not already have
+               Garly. The one phone we have is running the copy Play delivered,
+               and Play signs with its own key, so the real APK cannot be put
+               beside it: Android reads two signatures and refuses.
+
+               -PgarlyPreviewId builds the same release, R8 and all, under
+               pro.garlyapp.app.preview, which installs alongside and can be
+               opened, driven and removed without touching the real app. It
+               proves everything except the package name itself. It is a
+               property rather than a build type so there is no second
+               configuration quietly drifting away from this one. */
+            if (project.hasProperty("garlyPreviewId")) {
+                applicationIdSuffix ".preview"
+                versionNameSuffix "-preview"
+            }
+            if (System.getenv("GARLY_UPLOAD_STORE_PASSWORD") && System.getenv("GARLY_UPLOAD_KEY_ALIAS")) {
+                signingConfig signingConfigs.upload
+            } else {
+                println 'Release will be UNSIGNED: set GARLY_UPLOAD_STORE_PASSWORD and GARLY_UPLOAD_KEY_ALIAS to sign it.'
+            }
+        }
+        qa {
+            initWith release
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
+            // Without this the QA build declares the production FileProvider
+            // authority, and Android then refuses to install the real app next
+            // to it: "provider name ... is already used by pro.garlyapp.app.qa".
+            resValue "string", "providerAuthority", twaManifest.applicationId + '.qa.fileprovider'
+
+            signingConfig signingConfigs.debug
+            /* Off by default so a QA build is quick and its stack traces are
+               readable. Pass -PgarlyQaMinify to put it through R8 with the
+               release rules instead.
+
+               This matters more than it sounds. The billing crash that stopped
+               release 30 opening was verified on a QA build, and that build was
+               not minified, so the check proved the fix in code R8 had never
+               touched. A phone can only tell you about the bytes it ran. */
+            minifyEnabled project.hasProperty("garlyQaMinify")
+            resValue "bool", "useLocalQaPage", "true"
+            // The QA build normally carries its own name so it cannot be mistaken
+            // for the real app. Pass -PgarlyProductName to build a QA APK that
+            // shows the production name instead: the Android permission dialog
+            // quotes the app name, and a store declaration video has to show the
+            // name users will actually see, not an internal one.
+            def qaName = project.hasProperty("garlyProductName")
+                    ? twaManifest.launcherName
+                    : "Garly Acoustic QA"
+            resValue "string", "appName", qaName
+            resValue "string", "launcherName", qaName
+            matchingFallbacks = ['release']
+        }
+    }
+    sourceSets {
+        // The QA APK embeds the current local app page so it can be tested on a
+        // real phone without publishing those web changes to production.
+        qa {
+            assets.srcDir file("$rootDir/../app")
+        }
+        /* Una delle due cartelle entra, mai tutte e due. Contengono la stessa
+           classe con gli stessi metodi: una parla con Firebase, l'altra non fa
+           niente e non importa niente. Il resto dell'app chiama gli stessi
+           nomi in entrambi i casi. */
+        main {
+            java.srcDir file(project.ext.garlyFirebase
+                    ? "src/firebase/java"
+                    : "src/nofirebase/java")
         }
     }
     compileOptions {
@@ -218,5 +422,29 @@ dependencies {
         implementation 'com.google.androidbrowserhelper:locationdelegation:1.1.2'
     
         implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.6.2'
+
+        // Garly Core subscriptions. Also what makes Play Console offer the
+        // Subscriptions page at all: the library declares the BILLING
+        // permission, and without it in an uploaded build the console keeps
+        // asking for a new APK instead of letting a product be created.
+        implementation 'com.android.billingclient:billing:8.0.0'
+
+        // On-device acoustic analysis. Ships in every build now: YAMNet runs
+        // locally and no audio ever leaves the phone. Adds roughly 17 MB to the
+        // APK and is the reason minSdk is 23.
+        implementation 'org.tensorflow:tensorflow-lite-task-audio:0.4.4'
+
+        /* Firebase, e solo quando c'e' la sua configurazione. Crashlytics e'
+           la ragione vera: durante un test chiuso i tester non scrivono per
+           dire che l'app si e' chiusa, e senza i crash raccolti da qualche
+           parte quel silenzio sembra che vada tutto bene. Analytics viene
+           dietro per contare quanti aprono e cosa usano.
+           La distinta di versioni la sceglie Google, cosi le due librerie non
+           possono litigare fra loro. */
+        if (project.ext.garlyFirebase) {
+            implementation platform('com.google.firebase:firebase-bom:33.7.0')
+            implementation 'com.google.firebase:firebase-crashlytics'
+            implementation 'com.google.firebase:firebase-analytics'
+        }
     
 }
