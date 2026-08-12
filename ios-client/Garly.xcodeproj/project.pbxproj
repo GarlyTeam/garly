@@ -1,0 +1,315 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ABCD00000000000000000101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000001 /* AppDelegate.swift */; };
+		ABCD00000000000000000102 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000002 /* SceneDelegate.swift */; };
+		ABCD00000000000000000103 /* WebShellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000003 /* WebShellViewController.swift */; };
+		ABCD00000000000000000104 /* NativeBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000004 /* NativeBridge.swift */; };
+		ABCD00000000000000000105 /* InstallIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000005 /* InstallIdentity.swift */; };
+		ABCD00000000000000000106 /* GoogleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000006 /* GoogleSignInCoordinator.swift */; };
+		ABCD00000000000000000107 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000007 /* Config.swift */; };
+		ABCD00000000000000000113 /* AppleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000015 /* AppleSignInCoordinator.swift */; };
+		ABCD00000000000000000112 /* JourneyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000014 /* JourneyService.swift */; };
+		ABCD00000000000000000116 /* BackgroundImpactDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000016 /* BackgroundImpactDetector.swift */; };
+		ABCD00000000000000000111 /* ProtectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000013 /* ProtectionService.swift */; };
+		ABCD00000000000000000108 /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000008 /* bridge.js */; };
+		ABCD00000000000000000109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000009 /* Assets.xcassets */; };
+		ABCD00000000000000000110 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = ABCD00000000000000000010 /* PrivacyInfo.xcprivacy */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		ABCD00000000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000002 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000003 /* WebShellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShellViewController.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000004 /* NativeBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeBridge.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000005 /* InstallIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallIdentity.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000006 /* GoogleSignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInCoordinator.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000007 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000008 /* bridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
+		ABCD00000000000000000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ABCD00000000000000000010 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		ABCD00000000000000000011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ABCD00000000000000000012 /* Garly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Garly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABCD00000000000000000015 /* AppleSignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInCoordinator.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000014 /* JourneyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyService.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000016 /* BackgroundImpactDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImpactDetector.swift; sourceTree = "<group>"; };
+		ABCD00000000000000000013 /* ProtectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionService.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ABCD00000000000000000402 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ABCD00000000000000000201 = {
+			isa = PBXGroup;
+			children = (
+				ABCD00000000000000000202 /* Garly */,
+				ABCD00000000000000000204 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ABCD00000000000000000202 /* Garly */ = {
+			isa = PBXGroup;
+			children = (
+				ABCD00000000000000000001 /* AppDelegate.swift */,
+				ABCD00000000000000000002 /* SceneDelegate.swift */,
+				ABCD00000000000000000003 /* WebShellViewController.swift */,
+				ABCD00000000000000000004 /* NativeBridge.swift */,
+				ABCD00000000000000000013 /* ProtectionService.swift */,
+				ABCD00000000000000000014 /* JourneyService.swift */,
+				ABCD00000000000000000016 /* BackgroundImpactDetector.swift */,
+				ABCD00000000000000000015 /* AppleSignInCoordinator.swift */,
+				ABCD00000000000000000005 /* InstallIdentity.swift */,
+				ABCD00000000000000000006 /* GoogleSignInCoordinator.swift */,
+				ABCD00000000000000000007 /* Config.swift */,
+				ABCD00000000000000000203 /* Resources */,
+			);
+			path = Garly;
+			sourceTree = "<group>";
+		};
+		ABCD00000000000000000203 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ABCD00000000000000000008 /* bridge.js */,
+				ABCD00000000000000000009 /* Assets.xcassets */,
+				ABCD00000000000000000010 /* PrivacyInfo.xcprivacy */,
+				ABCD00000000000000000011 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		ABCD00000000000000000204 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABCD00000000000000000012 /* Garly.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ABCD00000000000000000302 /* Garly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABCD00000000000000000502 /* Build configuration list for PBXNativeTarget "Garly" */;
+			buildPhases = (
+				ABCD00000000000000000401 /* Sources */,
+				ABCD00000000000000000402 /* Frameworks */,
+				ABCD00000000000000000403 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Garly;
+			productName = Garly;
+			productReference = ABCD00000000000000000012 /* Garly.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ABCD00000000000000000301 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					ABCD00000000000000000302 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = ABCD00000000000000000501 /* Build configuration list for PBXProject "Garly" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ABCD00000000000000000201;
+			productRefGroup = ABCD00000000000000000204 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ABCD00000000000000000302 /* Garly */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ABCD00000000000000000403 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABCD00000000000000000109 /* Assets.xcassets in Resources */,
+				ABCD00000000000000000108 /* bridge.js in Resources */,
+				ABCD00000000000000000110 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ABCD00000000000000000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABCD00000000000000000101 /* AppDelegate.swift in Sources */,
+				ABCD00000000000000000102 /* SceneDelegate.swift in Sources */,
+				ABCD00000000000000000103 /* WebShellViewController.swift in Sources */,
+				ABCD00000000000000000104 /* NativeBridge.swift in Sources */,
+				ABCD00000000000000000111 /* ProtectionService.swift in Sources */,
+				ABCD00000000000000000112 /* JourneyService.swift in Sources */,
+				ABCD00000000000000000116 /* BackgroundImpactDetector.swift in Sources */,
+				ABCD00000000000000000113 /* AppleSignInCoordinator.swift in Sources */,
+				ABCD00000000000000000105 /* InstallIdentity.swift in Sources */,
+				ABCD00000000000000000106 /* GoogleSignInCoordinator.swift in Sources */,
+				ABCD00000000000000000107 /* Config.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		ABCD00000000000000000601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		ABCD00000000000000000602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ABCD00000000000000000603 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Garly/Garly.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 12;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Garly/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pro.garlyapp.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		ABCD00000000000000000604 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Garly/Garly.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 12;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Garly/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pro.garlyapp.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ABCD00000000000000000501 /* Build configuration list for PBXProject "Garly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABCD00000000000000000601 /* Debug */,
+				ABCD00000000000000000602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABCD00000000000000000502 /* Build configuration list for PBXNativeTarget "Garly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABCD00000000000000000603 /* Debug */,
+				ABCD00000000000000000604 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ABCD00000000000000000301 /* Project object */;
+}

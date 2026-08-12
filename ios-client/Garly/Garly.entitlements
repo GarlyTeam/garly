@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Senza questo, ASAuthorizationAppleIDProvider fallisce a runtime con un
+	     errore che non dice cosa manca. Va anche abilitato sull'App ID, cosa
+	     che Xcode fa da solo con la firma automatica. -->
+	<!-- Un conto alla rovescia SOS deve bucare il Focus e la modalita' Non
+	     disturbare: se qualcuno ha messo a tacere il telefono per dormire, e'
+	     esattamente il momento in cui un avviso deve arrivare comunque. Senza
+	     questa capability iOS ignora il livello richiesto e la notifica resta
+	     silenziosa come tutte le altre. -->
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
+</dict>
+</plist>
