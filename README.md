@@ -53,7 +53,10 @@ because a door that is drawn but locked is worse than no door:
   entry into a place the person marked as risky.
 - **The Safety Pool**: non-custodial, shared out by what was paid in and how
   long it was held.
-- **City Ambassadors**: hidden until a city can actually be claimed.
+- **City Ambassadors**: a world map where a city can be claimed and held.
+  Levels, badges, missions, and a share of the pool for the person who holds
+  it, and the revenue from Garly Pro. It stays out of sight until a city can
+  actually be claimed.
 - **Referrals**: not open. When they open they will ask for a wallet holding
   10,000 or more $GARLY.
 
