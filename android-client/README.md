@@ -1,6 +1,12 @@
 # Garly Android client
 
-This directory contains the reviewed native Android development client for Garly. It may include security hardening prepared after the most recent store testing build; published store versions are identified separately by their version code.
+Garly's interface is the web application served from `https://garlyapp.pro`. It is
+not in this directory. What is here is the Android code around it: the native host
+that loads it, and the services that have to be native to work at all.
+
+This is the reviewed development client. It may include security hardening prepared
+after the most recent store testing build; published store versions are identified
+separately by their version code.
 
 ## Included components
 

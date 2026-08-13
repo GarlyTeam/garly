@@ -113,9 +113,21 @@ Public beta and Android testing. Additional reviewed source code and technical d
 
 ## Public source scope
 
-The reviewed native Android development client is available in [`android-client/`](android-client/). It contains the WebView host, native Google sign-in bridge, foreground protection service, sensor bridge and Android resources used by the current development branch.
+Garly's interface is the web application served from `https://garlyapp.pro`, and it
+is not included here. What is included is the native code on each platform that hosts
+it, together with the services that have to be native to work at all: background
+sensing does not survive in a web page, and neither does a foreground service.
 
-The web application, backend services, production deployment configuration, private analytics and signing material are intentionally not included in this public repository.
+- [`android-client/`](android-client/): the WebView host, the Google sign-in bridge,
+  the foreground protection service, the sensor bridge, live location sharing and the
+  Android resources used by the current development branch.
+- [`ios-client/`](ios-client/): the `WKWebView` shell on the same start URL, the
+  native bridge the web app expects, protection, background impact detection and
+  journeys.
+
+The web application, backend services, production deployment configuration, private
+analytics and signing material are intentionally not included in this public
+repository.
 
 ## Source use
 
