@@ -30,10 +30,11 @@ The client:
 
 - blocks cleartext traffic and mixed content;
 - rejects untrusted WebView origins;
-- never grants the camera, and never grants a request that carries anything
-  besides audio, so the camera cannot ride along inside a microphone grant;
-- grants the microphone only to the official page, only for the opt-in acoustic
-  feature, and only once Android's own permission dialog has been accepted;
+- does not request the microphone at all: the shipping build declares no
+  RECORD_AUDIO permission and no microphone foreground service. The acoustic
+  feature that once used it, and its 17 MB native library, are compiled only
+  into the internal QA build, never into the app people install;
+- grants the camera to nothing, ever;
 - disables Android backup of WebView session data;
 - exposes the native JavaScript bridge only to the official application page;
 - keeps signing credentials outside the repository.

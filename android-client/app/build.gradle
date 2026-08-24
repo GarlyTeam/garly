@@ -33,6 +33,22 @@ plugins {
  * stessi metodi e non deve sapere se Firebase esiste. */
 def firebaseConfig = file("google-services.json")
 ext.garlyFirebase = firebaseConfig.exists()
+
+/* La funzione acustica gira solo nella build QA (useLocalQaPage): li' apre
+ * il microfono e usa TensorFlow Lite, l'unica libreria nativa dell'app,
+ * 17 MB. Nella build spedita quella funzione e' spenta, quindi TensorFlow
+ * non serve, e portarlo dietro voleva dire spedire l'unica libreria nativa:
+ * proprio quella che fa scattare il blocco di Play sulle pagine da 16 KB.
+ * Percio' il servizio vero e la sua dipendenza entrano solo quando si
+ * costruisce la QA, e nella build pubblica c'e' il suo gemello vuoto. Il
+ * segnale e' il nome del compito: bundleQa lo accende, bundleRelease no.
+ * Si puo' forzare con -PgarlyAcoustic=true. */
+ext.garlyAcoustic = project.hasProperty('garlyAcoustic')
+        ? project.property('garlyAcoustic').toBoolean()
+        : gradle.startParameter.taskNames.any { it.toLowerCase().contains('qa') }
+if (ext.garlyAcoustic) {
+    logger.lifecycle('GARLY  Acustica accesa: TensorFlow entra in questa build')
+}
 if (ext.garlyFirebase) {
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'com.google.firebase.crashlytics'
@@ -120,10 +136,20 @@ android {
         // e fa in modo che fermarla chiuda anche il percorso sul server. Visto
         // su un telefono vero: percorso attivo, notifica viva, e nell'app
         // niente da premere per smettere.
+// 41 toglie TensorFlow dalla build pubblica: era l'unica libreria nativa,
+        // 17 MB, e faceva scattare il blocco di Play sulle pagine da 16 KB in
+        // produzione. La funzione acustica che la usa e' spenta fuori dalla QA,
+        // quindi non si perde niente e l'app dimagrisce di 17 MB.
+        // 40 toglie il microfono. Non per estetica: Apple aveva respinto due
+        // volte con lo stesso schema, una capacita' dichiarata e una funzione
+        // che il revisore non trova, e su Android il microfono stava nella
+        // stessa posizione. Via RECORD_AUDIO, via il servizio in primo piano
+        // del microfono, e acousticProtection a false, cosi' la card sparisce
+        // da sola perche' la pagina chiede al guscio se la funzione esiste.
         versionCode project.hasProperty("garlyQaVersion")
                 ? project.property("garlyQaVersion").toInteger()
-                : 39
-        versionName "39.0"
+                : 41
+        versionName "41.0"
 
         // The name for the application. -PgarlyPreviewId renames it too, so a
         // test copy sitting next to the real Garly on the same launcher cannot
@@ -230,11 +256,16 @@ android {
         resValue "string", "orientation", twaManifest.orientation
         resValue "bool", "useLocalQaPage", "false"
         // Two separate switches on purpose:
-        //   acousticProtection -> the single user-facing "listen for danger
-        //                         sounds" toggle. On in every build.
+        //   acousticProtection -> the user-facing "listen for danger sounds"
+        //                         toggle. OFF since 19 August 2026: the feature
+        //                         was removed to match iPhone, where it does not
+        //                         exist and the microphone permission is not even
+        //                         declared. With this false the card disappears
+        //                         from the app on its own, because the page asks
+        //                         hasAcousticProtection() before showing it.
         //   useLocalQaPage     -> Sound Lab, calibration and simulated alerts.
         //                         QA only; users never see those.
-        resValue "bool", "acousticProtection", "true"
+        resValue "bool", "acousticProtection", "false"
 
         
     }
@@ -358,6 +389,9 @@ android {
             java.srcDir file(project.ext.garlyFirebase
                     ? "src/firebase/java"
                     : "src/nofirebase/java")
+            java.srcDir file(project.ext.garlyAcoustic
+                    ? "src/acoustic/java"
+                    : "src/noacoustic/java")
         }
     }
     compileOptions {
@@ -432,7 +466,9 @@ dependencies {
         // On-device acoustic analysis. Ships in every build now: YAMNet runs
         // locally and no audio ever leaves the phone. Adds roughly 17 MB to the
         // APK and is the reason minSdk is 23.
-        implementation 'org.tensorflow:tensorflow-lite-task-audio:0.4.4'
+        if (project.ext.garlyAcoustic) {
+            implementation 'org.tensorflow:tensorflow-lite-task-audio:0.4.4'
+        }
 
         /* Firebase, e solo quando c'e' la sua configurazione. Crashlytics e'
            la ragione vera: durante un test chiuso i tester non scrivono per

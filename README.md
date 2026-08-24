@@ -6,7 +6,7 @@ Garly is an AI-powered personal safety project designed to support people during
 
 ## Current development
 
-Garly is on Google Play in testing, and an iPhone build is heading to review.
+Garly is live on Google Play, and an iPhone build is heading to Apple review.
 
 **Protection**
 

@@ -54,16 +54,16 @@
         <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
         <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
         <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
-        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
         <!--
-          The microphone is opened only while Protection Mode is on AND the user
-          has turned on "Listen for danger sounds". Audio is classified on the
-          device by YAMNet and never uploaded; nothing is written to storage
-          unless the user separately enables event recordings.
+          Nessun microfono. Il rilevamento dei suoni di pericolo e' stato tolto
+          il 19 agosto 2026 per allineare Android a iPhone, dove la funzione non
+          esiste e il permesso non e' nemmeno dichiarato. Un permesso dichiarato
+          e una funzione che il revisore non trova sono la stessa contestazione
+          su tutte e due gli store, e questa app non ne ha bisogno: la
+          protezione si regge su movimento, scuotimento, SOS manuale e immobilita'.
         -->
-        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
         <!--
             Removed, not requested. Google Sign-In pulls these in transitively:
@@ -288,17 +288,6 @@
             android:exported="false"
             android:foregroundServiceType="location" />
 
-        <!--
-            On-device acoustic analysis. Started only when the user turns on
-            Protection Mode with "Listen for danger sounds" enabled, and stopped
-            with Protection. Audio is classified locally by YAMNet; no recording
-            is kept unless the user separately opts into event recordings.
-        -->
-        <service
-            android:name=".AcousticDiagnosticService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="microphone" />
 
         
             <activity android:name="com.google.androidbrowserhelper.trusted.NotificationPermissionRequestActivity" />
