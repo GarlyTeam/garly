@@ -1,5 +1,7 @@
 # Garly Android client
 
+> **Source snapshot notice (9 October 2026):** This directory contains an earlier reviewed native source snapshot. It is not the complete source of the latest store release and does not include every current feature, including the latest Last-Known Location integration. The implementation notes below describe this older snapshot and its development history; use the [current product overview](../README.md) and [public updates](../docs/UPDATES.md) for current availability.
+
 Garly's interface is the web application served from `https://garlyapp.pro`. It is
 not in this directory. What is here is the Android code around it: the native host
 that loads it, and the services that have to be native to work at all.
