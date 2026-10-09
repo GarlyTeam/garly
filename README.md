@@ -1,137 +1,83 @@
 # Garly
 
-**A privacy-first AI safety companion for everyday life.**
+**An AI personal safety companion for everyday life.**
 
-Garly is an AI-powered personal safety project designed to support people during everyday activities such as walking alone, commuting, travelling and outdoor exercise.
+Garly is available on **iOS and Android**. It combines optional safety monitoring, trusted-contact alerts and a companion that can remember information you choose to share.
 
-## Current development
+[App Store](https://apps.apple.com/app/id6800198393) · [Google Play](https://play.google.com/store/apps/details?id=pro.garlyapp.app) · [Website](https://garlyapp.pro/)
 
-Garly is live on Google Play, and an iPhone build is heading to Apple review.
+Product information updated **9 October 2026**. This repository contains public documentation and selected native source snapshots; it is not a complete copy of the current production application.
 
-**Protection**
+## Safety features
 
-- Protection Mode with motion, impact and free-fall detection, calibrated on real phones
-- Background monitoring, in a foreground service the person starts and can always stop
-- Trusted-contact SOS alerts, with a countdown that can be cancelled
-- Walk mode: a dead man's switch Garly can arm, and never fires on its own
-- Live location sharing, stoppable from any screen and from its own notification
-- Stillness detection with a timer the person chooses
-- Adjustable sensitivity, with jogging and bag movement profiles
-- An opt-in acoustic feature, with the clip encrypted on the phone and deleted after 24 hours
+- **Manual SOS:** start a cancellable alert flow without waiting for the AI or enabling Protection Mode.
+- **Protection Mode:** optional monitoring of supported, permitted device signals, including motion and stillness checks.
+- **Walk Mode:** an explicitly enabled check-in timer. Missing a check-in can start a cancellable countdown and the configured trusted-contact alert flow.
+- **Live Journey:** deliberately share a temporary, updating location link and stop sharing when you choose.
+- **Last-Known Location:** enable it while online, choose recipients and a threshold of **10 minutes, 30 minutes, 1 hour or 2 hours**. If the phone stops checking in, the server can send the last saved position through Telegram or email, even while that phone remains offline.
+- **Trusted contacts and saved places:** configure the people and places relevant to your safety.
 
-**The companion side**
+Core safety is free. It does not depend on Pro, evolution level, token ownership or participation in the community programme. Permissions, setup, device restrictions and delivery-channel availability still matter.
 
-- Private memory that saves a routine only when the person approves it, one line at a time
-- Eight characters, and one safety rule that overrides all of them
-- Nine evolutions, paced over months rather than days
-- Parental mode: a PIN a parent sets, a child-safe chat, and a notice to the trusted
-  contact that carries the danger category and nothing else
+Last-Known Location includes the saved position's capture time and available accuracy. A missing connection is not proof of danger, and the saved position is not live tracking. [How the safety flows work](docs/HOW_GARLY_WORKS.md).
 
-**Privacy**
+## A companion that grows with you
 
-- Privacy Lock for sensitive screens, with a separate PIN that survives a reinstall
-- Two-factor authentication
-- Export or delete your data, or delete the account
-- Ten complete languages across the app, the site and the legal pages
+Garly has **seven evolutions**: Germy, Plop, Boing, Peep, Wobble, Orbit and Oddity. Each has its own character and visual form. Eligible daily visits, confirmed ordinary routines, initial trusted-contact/place setup and daily Protection/Walk Mode activations contribute to progression. Ordinary chat and SOS do not award XP.
 
-Garly is developed through real-device testing. Detection systems continue to be
-calibrated to reduce false alarms and missed events, and what the screen says about
-them is held to one rule: nothing may claim a state it did not read. If the sensors
-stopped, the app says so. If a Focus can hold an alert back, the app says so.
+Evolution and conversation personality are separate. **Balanced** is available in Free; Pro adds **Professional, Friendly, Witty, Motivational, Minimal, Calm and Energetic**. Serious safety situations override the selected tone.
 
-Garly is being developed through real-device testing and community feedback. Detection systems are experimental and continue to be calibrated to reduce false alarms and missed events.
+The companion uses authorised memories and app context. It can explain the user's recorded evolution, unlocked forms and next milestone. A high evolution level does not mean Garly knows facts that the person never shared or allowed it to remember.
 
-## Built, not open yet
+The October companion update adds foreground follow-ups after selected app events and confirmed routine schedules. These questions do **not** notify contacts or trigger SOS when ignored. They do not establish that an actual route deviation or emergency occurred. [Companion, memory and evolutions](docs/COMPANION.md).
 
-These exist in the code and are deliberately switched off or out of sight,
-because a door that is drawn but locked is worse than no door:
+## Garly Pro
 
-- **Garly Pro**: longer memory and a deeper model. Not on sale. Safety is free,
-  and stays free.
-- **Event recording**: it will never record continuously. When switched on it
-  will keep one short recording after an impact, a sharp increase in speed, or
-  entry into a place the person marked as risky.
-- **The Safety Pool**: non-custodial, shared out by what was paid in and how
-  long it was held.
-- **City Ambassadors**: A world map where a city can be claimed and held.
-  Levels, badges, missions, and a share of the pool for the person who holds
-  it, and the revenue from Garly Pro. It stays out of sight until a city can
-  actually be claimed.
-- **Referrals**: not open. When they open they will ask for a wallet holding
-  10,000 or more $GARLY.
+Pro is available through the supported in-app store purchase flow. It adds companion personalisation, expanded saved memory, model choices, themes and personal usage insights. The current price and subscription terms appear at checkout. Core protection remains free.
 
-## How Garly works
+The published contribution policy allocates 30% of qualifying Pro revenue to the ICRC. See the [policy and published records](https://garlyapp.pro/cause.html) for the accounting basis and reporting schedule. This is not a claim of an ICRC partnership or endorsement.
 
-The public documentation explains Garly's user-facing safety and privacy flows without disclosing proprietary detection thresholds, calibration methods or production infrastructure:
+## Optional community features
 
-```mermaid
-flowchart LR
-    U["User"] --> M["Manual SOS"]
-    U --> P["Protection Mode"]
+City Ambassadors is Garly's optional community programme. People can join a city as citizens; eligible users can acquire an available Ambassador title. The title is a role in the programme, not ownership of a real city. Participation, missions and any rewards are separate from personal safety and from Home evolution XP.
 
-    M --> C["Short cancellable countdown"]
-    P --> D["Movement, impact and stillness monitoring"]
-    D --> Q["Safety check when appropriate"]
-    Q -->|"User confirms they are safe"| R["Protection continues"]
-    Q -->|"No confirmation"| C
-    D -->|"Potential urgent event"| C
+$GARLY is a community token on Solana. A wallet is not required for the core safety app. Buying an Ambassador title is not staking, and rewards are not guaranteed. Store Pro, Ambassador Premium and the community vault are distinct features; do not treat Pro subscription revenue as automatic Ambassador income.
 
-    C -->|"Cancelled"| R
-    C -->|"Completed"| A["Emergency alert"]
-    A --> T["Every trusted contact added by the user"]
-    A --> L["Available location when permission and signal allow"]
-```
+Use the [City Ambassadors manual](https://garlyapp.pro/app/ambassadors/user-manual/) for current eligibility, payment, membership and reward rules. Safety Pool availability and other community features must be checked in the product; this repository does not promise automatic emergency fund payouts.
 
-The manual SOS works independently from AI, learned routines and Protection Mode. The assisted path adds optional device monitoring and safety checks before the same emergency-alert flow.
+## Privacy and languages
 
-Detailed documentation:
+Optional memory, account-scoped data, Privacy Lock, two-factor authentication, and account export/deletion controls are part of Garly's privacy model. Chat may be processed by external AI providers; Garly does not claim that every operation happens on the phone.
 
-- [How Garly works](docs/HOW_GARLY_WORKS.md)
-- [Privacy model](docs/PRIVACY_MODEL.md)
+The product includes 18 language options: English, Italian, Spanish, French, German, Portuguese, Brazilian Portuguese, Russian, Turkish, Arabic, Hindi, Telugu, Indonesian, Japanese, Korean, Chinese, Swedish and Persian. Persian includes right-to-left layouts.
 
-## Privacy and security
-
-Garly is being designed around user consent, account-level data isolation and restricted access to sensitive information.
-
-This public repository is being prepared gradually. Only reviewed documentation and source components are published: the Android client under `android-client/` and the iPhone client under `ios-client/`. The hosted web application, the backend services, production credentials, signing keys, private analytics and infrastructure configuration are never included.
-
-Security issues should not be reported through public issues. Please use GitHub's private vulnerability reporting feature.
-
-## Important safety notice
-
-Garly is not a replacement for emergency services, professional medical assistance or local authorities. Experimental safety detection cannot guarantee that every dangerous event will be identified.
-
-If you are in immediate danger, contact the emergency services available in your country.
-
-## Links
-
-- Website: https://garlyapp.pro/
-- Live demo: https://garlyapp.pro/app/
-- Product Hunt: https://www.producthunt.com/products/garly
-- X: https://x.com/appgarly
-
-## Project status
-
-Public beta and Android testing. Additional reviewed source code and technical documentation will be added progressively.
+[Privacy model](docs/PRIVACY_MODEL.md) · [Published privacy policy](https://garlyapp.pro/privacy.html)
 
 ## Public source scope
 
-Garly's interface is the web application served from `https://garlyapp.pro`, and it
-is not included here. What is included is the native code on each platform that hosts
-it, together with the services that have to be native to work at all: background
-sensing does not survive in a web page, and neither does a foreground service.
+- [`android-client/`](android-client/): a previously reviewed Android native source snapshot.
+- [`ios-client/`](ios-client/): a previously reviewed iOS native source snapshot.
+- [`docs/`](docs/): product behaviour, privacy boundaries and public release notes.
 
-- [`android-client/`](android-client/): the WebView host, the Google sign-in bridge,
-  the foreground protection service, the sensor bridge, live location sharing and the
-  Android resources used by the current development branch.
-- [`ios-client/`](ios-client/): the `WKWebView` shell on the same start URL, the
-  native bridge the web app expects, protection, background impact detection and
-  journeys.
+The hosted web application, backend services, production configuration, credentials, signing keys, private analytics and user data are intentionally excluded. The native snapshots do not yet contain every feature in the current store releases, including the latest Last-Known Location integration. Their presence is not a claim of build-for-build parity with the stores.
 
-The web application, backend services, production deployment configuration, private
-analytics and signing material are intentionally not included in this public
-repository.
+The 9 October repository refresh updates documentation; it does not replace these native source snapshots. [Latest public update](docs/UPDATES.md).
 
-## Source use
+## Safety limitations
 
-Garly-owned files are source-available for transparency and security review, but they are not currently released under an open-source license. See [`NOTICE.md`](NOTICE.md). Files carrying their own third-party license header remain governed by that license; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Garly supports personal safety; it does not replace emergency services or guarantee detection, delivery or rescue. Background behaviour depends on the operating system, permissions, battery management and whether the app remains able to run. Location may be unavailable or outdated. No AI conversation should be treated as confirmation that an alert was delivered.
+
+For immediate danger, contact the emergency services available in your country when it is safe to do so.
+
+## Security and source use
+
+Report vulnerabilities privately, following [SECURITY.md](SECURITY.md), rather than in public issues. Do not test emergency flows against uninformed contacts.
+
+Garly-owned files are source-available for transparency and security review; they are not released under an open-source licence. See [NOTICE.md](NOTICE.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
+
+## Links
+
+- [Website](https://garlyapp.pro/)
+- [Web app](https://garlyapp.pro/app/)
+- [X](https://x.com/appgarly)
+- [Product Hunt](https://www.producthunt.com/products/garly)

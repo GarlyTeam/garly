@@ -26,13 +26,13 @@ When investigating a potential vulnerability:
 
 ## Scope
 
-Reports may concern the reviewed public components, authentication, account isolation, privacy controls, Android safety functionality and Garly-operated services.
+Reports may concern the reviewed public components, authentication, account isolation, privacy controls, Android and iOS safety functionality and Garly-operated services.
 
 Third-party platforms and services should normally be reported directly to their respective providers.
 
 ## Supported versions
 
-Garly is currently in public beta and Android testing. Only the most recent publicly available version is actively supported.
+Garly is available on iOS and Android. Only the most recent publicly available app versions are actively supported. The native source directories in this repository are earlier reviewed snapshots, not guaranteed copies of the latest store builds.
 
 ## Safety notice
 
