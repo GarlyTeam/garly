@@ -1,5 +1,7 @@
 # Garly for iOS
 
+> **Source snapshot notice (9 October 2026):** This directory contains an earlier reviewed native source snapshot. It is not the complete source of the latest store release and does not include every current feature, including the latest Last-Known Location integration. The implementation notes below describe this older snapshot and its development history; use the [current product overview](../README.md) and [public updates](../docs/UPDATES.md) for current availability.
+
 The iOS shell. One `WKWebView` on `https://garlyapp.pro/app/index.html`, the
 same start URL as the Android TWA, plus the native bridge the web app expects.
 
