@@ -1,84 +1,44 @@
 # Garly privacy model
 
-Garly is designed around user choice, account-level separation and limited sharing of safety information. This document describes the product model at a high level; it does not expose private infrastructure or security controls that could weaken the service.
+Updated 9 October 2026. This is a product overview; the [published privacy policy](https://garlyapp.pro/privacy.html) provides the service's formal privacy information.
 
-## Core principles
+## Choice and account separation
 
-1. **User choice:** optional memory, saved places, trusted contacts and Protection Mode are controlled by the user.
-2. **Account isolation:** account data is scoped to the authenticated user rather than shared as one global application state.
-3. **Local separation:** device-side state is separated by account, and account-bound interface state is cleared when the active account changes.
-4. **Limited emergency sharing:** an SOS shares the emergency message and available location with the trusted contacts selected by the user.
-5. **Visible protection:** Android background monitoring uses a visible foreground-service notification rather than hidden monitoring.
-6. **User controls:** users can disable optional memory and access available export or deletion controls.
-7. **Non-custodial wallets:** optional wallet features prove ownership through a message signature. Garly never holds a seed phrase or private key and cannot move a user's funds..
+Optional memory, saved places, trusted contacts and safety modes are controlled by the user. Account data is scoped to the authenticated identity. Account-bound local state must not be carried into another user's session.
 
-## Conceptual data flow
+Users can review or delete saved information and use available export, history and account-deletion controls. Privacy Lock protects sensitive app areas, with separate parental controls and two-factor authentication where configured.
 
-```mermaid
-flowchart TB
-    U["Authenticated user"] --> UI["Garly app"]
+## Conversations and memory
 
-    UI --> LS["Account-separated device state"]
-    UI --> AS["Account-scoped service data"]
-    UI --> PM["Optional Protection Mode"]
+The companion receives selected authorised context rather than unrestricted access to the phone. Explicit durable facts may be proposed as memories; routines and sensitive information require consent. Inferred patterns and passing moods must not be presented as confirmed saved facts.
 
-    AS --> MEM["Optional memories and chat history"]
-    AS --> CT["Trusted contacts and user-selected places"]
+Chat may be processed by external AI providers. This repository does not claim that the entire AI service is on-device or that all conversations are end-to-end encrypted.
 
-    PM --> SIG["Permitted device and location signals"]
-    SIG --> DEC["Safety evaluation"]
-    DEC -->|"No emergency"| PM
-    DEC -->|"Confirmed or completed SOS"| ALERT["Emergency message and available location"]
-    ALERT --> ALL["Every trusted contact selected by the user"]
-```
+Foreground check-ins use a small set of app events and confirmed routine schedules. They respect the privacy lock and avoid repetitive questions. They do not share the conversation with trusted contacts or automatically alert them when ignored.
 
-This diagram shows product responsibilities, not the private network architecture.
+## Location and emergency sharing
 
-## Data categories and user controls
+- Manual and configured automatic SOS flows attempt to share an emergency message and available location with configured trusted contacts.
+- Live Journey deliberately shares a temporary updating location link. Keep the link private.
+- Last-Known Location requires opt-in, selected recipients and server-confirmed activation. It retains the latest position for the feature rather than a route history; that position has a 24-hour retention limit.
+- A saved location has a capture time and available accuracy. It is not proof of the user's current position or safety.
+- Deleting a server-held position cannot recall copies of messages already delivered to recipients.
+- An offline local pause is not server-confirmed cancellation; the app must communicate the distinction.
 
-| Data category | Why Garly uses it | User control |
-| --- | --- | --- |
-| Account identity | Authentication and separation of account data | Sign in, sign out and account-security controls |
-| Chat and optional memory | Companion conversations and information the user chooses to retain | Memory can be disabled; available history and memory controls include deletion and export |
-| Trusted contacts | Delivery of user-requested or confirmed emergency alerts | The user adds, edits and removes contacts |
-| Saved places and routines | User-selected context and safety preferences | Created and managed by the user |
-| Motion and orientation signals | Active Protection Mode and calibration on supported devices | Protection Mode is optional and requires device permission where applicable |
-| Location | Safety checks, user-selected place features and available SOS location | Controlled through device permission; saved places are chosen by the user |
-| Privacy Lock PIN | Additional device-level protection for sensitive areas | Optional six-digit PIN; stored as a one-way verification value for that account on that device |
-| Wallet address | Confirming $GARLY holdings for optional referral and personalisation unlocks | Connecting is optional and can be disconnected; only the public address is retained, never a seed phrase or private key |
+Location, signal and delivery may be unavailable. There is no guarantee that every alert reaches or is read by its recipient.
 
-## Account changes
+## Recording and device permissions
 
-When the authenticated account changes, Garly's account-bound interface state must not carry information from the previous user into the new session. Device storage used by the app is namespaced by the authenticated account, and server requests rely on the authenticated identity rather than a client-supplied account selection.
+Do not infer active microphone or recording behaviour from a planned setting or a source-code capability. Feature availability depends on the shipping build and explicit device permissions. Garly does not advertise continuous listening as the basis of its companion or Last-Known Location features.
 
-These boundaries cover sensitive areas such as chats, memories, contacts, saved places, routines, rewards and progression state.
+## Optional community and wallets
 
-## Emergency sharing
+A wallet is not required for the core safety app. Optional community flows may verify control of a public Solana address using a signed message; payment flows are separate transactions shown to the user. Garly must never request a seed phrase or private key.
 
-An emergency flow is intentionally different from ordinary companion use:
+Private chats, contact lists and personal location history are not intended to be published on-chain. A public community map contribution is different from a private saved place.
 
-- The manual SOS can be started without AI or Protection Mode.
-- Automatic protection uses confirmation or a cancellable countdown where appropriate.
-- Once the SOS completes, Garly attempts to alert every trusted contact configured by the user.
-- The alert can include the available location when location permission, signal and connectivity allow it.
-- Garly does not claim that delivery or location accuracy is guaranteed in every environment.
+## Repository boundary
 
-## Recording
+The public repository contains documentation and selected, older Android and iOS native source snapshots. It excludes user records, private analytics, production credentials, signing keys, hosted web/backend source and deployment configuration.
 
-The current prototype does not record audio or video as part of the emergency flow. A possible short event-recording feature is being evaluated. If introduced, it is intended to be optional, clearly indicated and limited to an emergency event rather than continuous recording.
-
-## Public transparency and private security
-
-The public repository includes reviewed documentation and selected Android client source for transparency and community feedback. It intentionally excludes:
-
-- production credentials and signing keys;
-- private analytics and operational data;
-- backend source and deployment configuration;
-- private endpoints and infrastructure topology;
-- detailed detection, calibration and anti-abuse logic.
-
-Security problems should be reported through GitHub's private vulnerability reporting feature, as described in [`SECURITY.md`](../SECURITY.md), rather than through a public issue.
-
-## Safety notice
-
-Privacy protections reduce risk but cannot make any connected service immune to every failure or attack. Garly remains an experimental safety product and is not a replacement for emergency services or local authorities.
+Report security concerns privately as described in [SECURITY.md](../SECURITY.md). Do not publish another person's location, credentials or private messages in a report.

@@ -1,136 +1,78 @@
 # How Garly works
 
-This document provides a high-level description of Garly's current public beta and Android testing experience. It is intended to help users, testers and reviewers understand the product without publishing proprietary detection thresholds, calibration methods or production infrastructure.
+Current product overview, updated 9 October 2026. Garly is available on iOS and Android. This document describes user-facing behaviour without publishing backend code or production infrastructure.
 
-## Two ways to ask for help
+## Manual SOS and Protection Mode
 
-Garly provides a direct manual path and an assisted protection path. The manual SOS does not depend on AI, learned routines or sensor timing..
+Manual SOS is available independently of AI, learned routines and Protection Mode. It starts the configured cancellable alert flow. When that flow completes, Garly attempts to notify the user's configured trusted contacts with an available location.
+
+Protection Mode is an optional monitoring session. On supported devices, it uses permitted motion and location signals to support checks for potentially significant events. Sensitivity and carrying-position settings help account for normal activity. Detection and delivery are not guaranteed.
 
 ```mermaid
 flowchart LR
-    U["User"] --> M["Manual SOS"]
-    U --> P["Protection Mode"]
-
-    M --> C["Short cancellable countdown"]
-    P --> D["Movement, impact and stillness monitoring"]
-    D --> Q["Safety check when appropriate"]
-    Q -->|"User confirms they are safe"| R["Protection continues"]
-    Q -->|"No confirmation"| C
-    D -->|"Potential urgent event"| C
-
-    C -->|"Cancelled"| R
-    C -->|"Completed"| A["Emergency alert"]
-    A --> T["Every trusted contact added by the user"]
-    A --> L["Available location when permission and signal allow"]
+    U[User] --> M[Manual SOS]
+    U --> P[Enable Protection Mode]
+    P --> D[Supported device signals]
+    D --> Q[Safety check or incident flow]
+    Q --> C[Cancellable countdown]
+    M --> C
+    C -->|Completed| A[Attempt configured contact alerts]
+    C -->|Cancelled| R[Return to the configured app state]
 ```
 
-### Manual SOS
+## Stillness checks
 
-The red SOS button is available for situations where the user wants immediate control. It can be used without enabling Protection Mode. After a short cancellable countdown, Garly attempts to alert every trusted contact the user has added and includes the available location when possible.
+With Protection Mode and a stillness threshold enabled, the app can ask for confirmation after a period without meaningful movement. The user can confirm they are okay or intentionally waiting. If the check expires unanswered, it can enter the configured SOS countdown flow.
 
-### Protection Mode
+Respond to the on-screen stillness control: writing an ordinary chat message does not dismiss that control or cancel an SOS timer. The deterministic app flow owns these timers, not the language model.
 
-Protection Mode is an optional monitoring session. When enabled, Garly uses the device signals that are available and permitted to look for meaningful changes associated with movement, impacts and prolonged stillness. A visible Android foreground service supports monitoring while the testing app is in the background.
+## Walk Mode
 
-Automatic detection is experimental. Garly includes confirmation and cancellation steps where appropriate to reduce unnecessary alerts, but no detection system can guarantee that every emergency will be identified or that every false alarm will be prevented.
+Walk Mode is enabled deliberately for timed check-ins. If the person stops responding for the selected interval, the configured countdown and trusted-contact alert flow can begin. It is not simply a casual conversation mode.
 
-## Activity and carrying profiles
+Permissions, platform restrictions and the app's ability to run still matter. A scheduled local notification alone is not proof that a remote alert was sent.
 
-Different activities can produce very different motion patterns. Garly therefore lets the user select a profile rather than treating every movement in the same way.
+## Live Journey
 
-| Profile | User-facing purpose |
-| --- | --- |
-| Everyday | General walking, commuting and normal daily movement |
-| Jogging | Accounts for repeated running movement while still watching for unusual events |
-| Bag | Supports testing when the phone is carried inside a bag rather than in the hand |
-| Stillness check | Lets the user choose when prolonged lack of meaningful movement should trigger a safety confirmation |
+Live Journey shares a temporary, updating location link. It is separate from Walk Mode and from a one-time SOS location. Sharing can be stopped by the user; ending a share does not itself prove they arrived safely.
 
-Bag and jogging calibration are designed to adapt the experience to the user's device placement and real movement. The underlying signal combinations, thresholds and calibration rules are intentionally not published.
+Treat the link as private: someone who obtains it may be able to view the shared position while it is valid.
 
-## Stillness safety check
+## Last-Known Location
 
-While Protection Mode is active, the user can choose how long Garly should wait without meaningful movement or GPS displacement before asking whether they are safe.
+This optional feature is off until the user enables it while connected, grants the required permissions and chooses recipients.
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant Garly
-    participant Contacts as Trusted contacts
+1. Choose an alert threshold: **10 minutes, 30 minutes, 1 hour or 2 hours**.
+2. Confirm activation and allow the phone to send its check-ins and available location.
+3. If the server stops receiving check-ins for the selected duration, it can send the last saved position to the selected contacts through **Telegram or email**.
+4. The message includes the position's recorded time and available accuracy. Delivery can still fail or be delayed by external services.
 
-    User->>Garly: Enables Protection Mode and chooses a stillness delay
-    Garly->>Garly: Monitors permitted movement and location signals
-    Garly->>User: Are you okay?
-    alt User confirms
-        User->>Garly: I am okay / I am waiting here
-        Garly->>Garly: Clears or pauses the check
-    else No response
-        Garly->>User: Starts the cancellable SOS countdown
-        Garly->>Contacts: Attempts to alert every configured trusted contact
-    end
-```
+The phone does not need to reconnect for the server to send information it already received. The feature cannot upload a new position after connectivity has been lost. GPS loss alone is different from the server no longer receiving check-ins.
 
-Vehicle movement and GPS displacement can help reset the stillness timer when those signals are available. This is especially relevant when the phone is in a bag or the user is travelling.
+It does not detect an earthquake, collapse or other disaster. A dead battery, lost signal, force-closing the app or operating-system restrictions can also interrupt updates.
 
-## Trusted contacts
+Pause while connected and wait for server acknowledgement. Stopping locally while offline cannot immediately cancel a deadline already held by the server. A connection-restored notice means updates resumed; it does not certify that the person is safe.
 
-Trusted contacts are selected by the user. When an emergency alert is completed, Garly attempts to notify every trusted contact added to the account, not only the first contact. Delivery and location accuracy can depend on connectivity, device permissions and third-party messaging availability.
+## Trusted contacts and delivery
 
-## AI companion and private memory
+General SOS delivery can use supported, configured Telegram, WhatsApp and email channels. Telegram contacts must complete the linking flow. WhatsApp requires the sender's linked account. Availability depends on configuration and service status.
 
-Garly's companion can support conversations, optional memories and routines chosen by the user. These features are separate from the manual SOS path: the user never needs to wait for the AI to decide whether the red SOS button can be used.
+Last-Known Location currently uses Telegram and email; do not assume that every general SOS channel is available for that feature.
 
-Private memory is optional and includes user controls to review or delete saved information. More detail is available in the [privacy model](PRIVACY_MODEL.md).
+Starting a countdown, attempting a send, receiving provider acceptance and the recipient reading a message are different states. The companion must not claim successful delivery without a corresponding result.
 
-## Community rewards and personalisation
+## Companion checks are separate
 
-Garly's safety features are not for sale. The manual SOS, Protection Mode, trusted contacts and emergency alerts are always available, and none of them depend on holding a token, earning points or inviting anyone. Rewards, referrals and appearance options are optional extras that sit outside the emergency path.
+The companion may ask a brief foreground question after selected events or a confirmed routine schedule. These conversational questions do not trigger SOS or contact messages when ignored. See [companion behaviour and progression](COMPANION.md).
 
-Emergency actions and crisis disclosures never generate rewards. Asking for help is not treated as activity to be farmed.
+## Free safety and optional features
 
-```mermaid
-flowchart TB
-    W["User chooses to connect a Solana wallet"] --> SIG["Wallet signs a single-use text challenge"]
-    SIG --> V["Garly's server verifies the signature"]
-    V -->|"Signature not valid"| N["Feature stays locked"]
-    V -->|"Signature valid"| B["Server reads the wallet's $GARLY balance"]
-    B -->|"Below the holder threshold"| N
-    B -->|"Balance cannot be read"| N
-    B -->|"Meets the holder threshold"| U["Referrals and holder personalisation unlock"]
-```
+Core safety does not require a subscription, wallet, token, invitation or evolution level. Pro personalises the companion experience. City Ambassadors and other community features are separate from emergency protection.
 
-### Garly Points
+No emergency action or crisis disclosure earns evolution XP. A safety mode should be enabled because it is useful, not simply to collect points.
 
-Garly Points are off-chain beta units recorded in the user's account to reflect eligible beta activity. They are not a currency, a tradable balance or a promise of future value.
+## Platform and safety limits
 
-### $GARLY holders
+Android background services and iOS background capabilities differ. Permissions, battery management, force-stop behaviour and connectivity can affect operation. Features do not provide guaranteed continuous observation or emergency-service dispatch.
 
-$GARLY is Garly's community token on Solana. Holding at least 10,000 $GARLY unlocks the Referrals screen and holder-only personalisation such as alternative layouts, backgrounds and themes. Core safety stays free regardless of holdings.
-
-### How a wallet is verified
-
-To apply a holder benefit, Garly needs confidence that the person using the account actually controls the wallet being claimed.
-
-- The wallet signs a short single-use text challenge. This is a message signature, not a transaction.
-- The signature cannot move, spend, stake or approve funds.
-- Garly never asks for a seed phrase or a private key, and never requests a token approval.
-- Only the wallet's public address is retained, and the user can disconnect it.
-
-Both the signature check and the balance read happen on Garly's servers. The browser is never trusted to report its own holdings, so an unlock cannot be granted by editing the page on the user's own device. If the balance cannot be read, the check fails closed and the feature stays locked rather than opening by default.
-
-### Garly Safety Pool
-
-The Safety Pool is an optional, non-custodial emergency fund shared with people the user trusts. It uses a Solana multisig in which every member connects and approves with their own wallet. Garly never creates, receives or stores a seed phrase or private key for a pool, and cannot move pool funds on its own. This feature is in limited testing and is not yet generally available.
-
-## Current limitations
-
-- Garly is in public beta and Android testing.
-- Automatic detection remains experimental and requires real-device testing.
-- Background behavior depends on Android permissions and device power-management settings.
-- Location and message delivery depend on permission, signal, connectivity and external services.
-- Planned short event recording is not active in the current prototype and will require explicit user choice before release.
-- Rewards, referrals, holder personalisation and the Safety Pool are experimental beta features and may change.
-- Garly is not a replacement for emergency services, medical assistance or local authorities.
-
-## Information intentionally not published
-
-For user safety, project security and protection of Garly's original work, this repository does not document sensor-fusion formulas, numeric thresholds, calibration algorithms, anti-abuse controls, private API endpoints, production topology, credentials or signing material.
+Garly does not replace emergency services, medical assistance or local authorities. The public native source snapshots are older than the current store builds; see their directory notices before using them as implementation references.
