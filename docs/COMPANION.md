@@ -1,6 +1,6 @@
 # Companion, memory and evolutions
 
-Product behaviour as of 9 October 2026. The hosted implementation is not included in this public repository.
+Product overview reviewed 19 November 2026. The hosted implementation is not included in this public repository.
 
 ## What the companion knows
 
@@ -39,6 +39,8 @@ The companion reads the authenticated account's recorded progress to explain the
 Each eligible activity earns 5 XP, with a shared daily maximum of 15 XP. Daily visits, Protection activation and Walk Mode activation each count at most once per day. At most one new, explicitly confirmed ordinary routine counts per day. The first five distinct trusted contacts and first five distinct saved places can each earn a setup bonus, once per item. Repeated setup, ordinary chat, SOS and dangerous or distressing situations do not earn progression rewards.
 
 Existing progression is mapped into the seven-form system. The visual journey is not a measure of how much private information Garly knows and does not grant stronger safety features.
+
+Home progression, City mission scoring and campaign points have different rules and purposes. An XP balance is not cryptocurrency and has no fixed exchange rate into $GARLY. Community mission credits and token distributions must be explained using the [community programme rules](COMMUNITY.md), rather than inferred from the companion's appearance or conversation.
 
 ## Conversation personalities
 

@@ -1,5 +1,26 @@
 # Public product updates
 
+## 19 November 2026
+
+This documentation refresh aligns the public overview with the [whitepaper v1.4](Garly-Whitepaper.pdf), published on the [Garly website](https://garlyapp.pro/assets/Garly-Whitepaper.pdf) on 19 November 2026.
+
+- Added Garly Meet's optional meeting check-ins and configured alert flow.
+- Documented Voice SOS beta, exact command phrases, deliberate session start/stop, the cancellable 15-second countdown and local voice processing. No 120-minute listening release or date is announced here.
+- Clarified Last-Known Location activation, its 24-hour latest-point retention, selected recipients and the distinction between missing updates and an emergency.
+- Updated the privacy model for microphone uses, account/server storage, optional analytics, retention boundaries and external Whistle use.
+- Added City Studio spaces, configured mission weights, the distinction between social content checks and X declarations, and variable $GARLY distributions.
+- Corrected Citizen joining: no token purchase or payout-wallet entry is needed to join; joining rules still apply and eligible token payments still need a payout address.
+- Added the 2,000-credit Whistle ticket flow, single redemption and the agreed 30-day unused-card redemption window applied by Whistle.
+- Added a dated public-chain token snapshot, distinguishing current total supply from the historical manual figure and from unverified allocation, vesting, LP-lock and listing claims.
+
+The PDF is the same file as the website edition, SHA-256:
+
+```text
+ebbbdc96cf2d86d8a9d6ccae008cbc4627b96dee725df9abce35be61c14379ac
+```
+
+This refresh documents confirmed behaviour and explicitly labels undecided or unverified matters. It does not activate campaigns, change balances or rewards, issue gift cards, update native store builds, or replace the selected native source snapshots.
+
 ## 9 October 2026
 
 - Garly is available on both iOS and Android.

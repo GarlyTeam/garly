@@ -1,6 +1,6 @@
 # How Garly works
 
-Current product overview, updated 9 October 2026. Garly is available on iOS and Android. This document describes user-facing behaviour without publishing backend code or production infrastructure.
+Current product overview, updated 19 November 2026. Garly is available on iOS and Android. This document describes user-facing behaviour without publishing backend code or production infrastructure. See also the [v1.4 whitepaper](Garly-Whitepaper.pdf).
 
 ## Manual SOS and Protection Mode
 
@@ -32,6 +32,28 @@ Walk Mode is enabled deliberately for timed check-ins. If the person stops respo
 
 Permissions, platform restrictions and the app's ability to run still matter. A scheduled local notification alone is not proof that a remote alert was sent.
 
+## Garly Meet
+
+Prepare an optional check-in for a meeting, choose trusted contacts and add useful meeting details. The app can remind the user when it is time to check in. If confirmation is missing after the grace period, the selected contacts can receive an alert with the configured meeting details and latest saved location.
+
+Use the dedicated check-in controls. An ordinary companion reply or a scheduled reminder is not confirmation that an alert was sent or received.
+
+## Voice SOS - beta
+
+Voice SOS starts only when the user chooses and starts a listening session:
+
+1. Select the command language and prepare its downloaded recognition model.
+2. Accept the microphone and calibration notice, choose an available duration and start the session.
+3. Complete the short voice preparation and wait for the listening state.
+4. Say the exact phrase for that language, such as **“Help me now”** in English or **“Attiva emergenza”** in Italian. A shout alone is not the command.
+5. A recognised command starts a cancellable **15-second countdown**. If it expires, the app requests a real SOS through Garly's server for the configured contacts.
+
+Listening may continue with the screen locked. **Closing the panel does not stop it:** use Stop listening. Expiry also ends the session. Noise, distance, pronunciation, a covered microphone, battery management and operating-system restrictions can affect recognition.
+
+Recognition runs on the phone, but server delivery requires a connection and functioning delivery services. No audio or transcript accompanies the alert. Voice SOS does not automatically call emergency services.
+
+Available listening durations must be read from the installed release. Longer sessions remain subject to recognition, background and battery validation. This document does not announce a 120-minute listening release or a release date. Last-Known Location's two-hour threshold is a different setting.
+
 ## Live Journey
 
 Live Journey shares a temporary, updating location link. It is separate from Walk Mode and from a one-time SOS location. Sharing can be stopped by the user; ending a share does not itself prove they arrived safely.
@@ -43,11 +65,13 @@ Treat the link as private: someone who obtains it may be able to view the shared
 This optional feature is off until the user enables it while connected, grants the required permissions and chooses recipients.
 
 1. Choose an alert threshold: **10 minutes, 30 minutes, 1 hour or 2 hours**.
-2. Confirm activation and allow the phone to send its check-ins and available location.
+2. Allow the phone to send its check-ins and available location. Wait for the **server-confirmed active state**; updating or waiting for the first position is not confirmed activation.
 3. If the server stops receiving check-ins for the selected duration, it can send the last saved position to the selected contacts through **Telegram or email**.
 4. The message includes the position's recorded time and available accuracy. Delivery can still fail or be delayed by external services.
 
 The phone does not need to reconnect for the server to send information it already received. The feature cannot upload a new position after connectivity has been lost. GPS loss alone is different from the server no longer receiving check-ins.
+
+Only the latest saved point is retained for this feature, for up to **24 hours**, rather than a route history. The user chooses the recipients and agrees to the stated sharing conditions. Messages already delivered cannot be recalled.
 
 It does not detect an earthquake, collapse or other disaster. A dead battery, lost signal, force-closing the app or operating-system restrictions can also interrupt updates.
 

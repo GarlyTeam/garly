@@ -1,0 +1,19 @@
+{
+  "network": "Solana mainnet",
+  "mint": "HNDFkPM2LgAMX6tK38ViwHWzmzuiQb6Kjqt4EHcMpump",
+  "checkedAt": "2026-11-19T09:11:30.187456+00:00",
+  "rpcEndpoint": "https://api.mainnet-beta.solana.com",
+  "rpcMethods": [
+    "getTokenSupply",
+    "getAccountInfo (jsonParsed)"
+  ],
+  "supplySlot": 471280906,
+  "accountSlot": 471280907,
+  "rawTotalSupply": "946329897661048",
+  "decimals": 6,
+  "totalSupply": "946329897.661048",
+  "mintAuthority": null,
+  "freezeAuthority": null,
+  "accountProgram": "spl-token-2022",
+  "scope": "Dated public-chain snapshot; not a token audit, circulating-supply assertion, team allocation or liquidity-lock proof."
+}
